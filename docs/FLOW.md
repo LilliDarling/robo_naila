@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     subgraph Robot
         A[Microphone] --> B(Audio Capture & Pre-processing)
@@ -41,3 +42,4 @@ graph TD
         W[MQTT, WebSockets, HTTP]
         X[File Transfer for OTA]
     end
+```
