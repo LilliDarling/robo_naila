@@ -3,7 +3,7 @@ Small custom built desk AI robot prototype.
 
 ## Copyright & Licensing
 
-© [2025] [Valkyrie Remedy LLC]. All rights reserved.
+©2025 Valkyrie Remedy LLC. All rights reserved.
 
 This code is provided for informational and educational purposes only. You are welcome to view the code.
 
