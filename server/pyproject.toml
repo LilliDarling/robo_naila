@@ -4,4 +4,13 @@ version = "0.1.0"
 description = "Server for NAILA Robot Prototype"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fastapi>=0.115.14",
+    "faster-whisper>=1.1.1",
+    "llama-cpp-python>=0.3.10",
+    "numpy>=2.3.1",
+    "paho-mqtt>=2.1.0",
+    "requests>=2.32.4",
+    "ultralytics>=8.3.162",
+    "uvicorn>=0.35.0",
+]
