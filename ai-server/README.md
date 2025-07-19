@@ -1,8 +1,8 @@
-# NAILA AI Server
+# NAILA AI Orchestration Server
 
-This directory contains the Python-based local AI server that acts as the "brain" for the robot. It handles computationally intensive AI tasks such as Speech-to-Text (STT), Natural Language Understanding (NLU) / Large Language Model (LLM) inference, Text-to-Speech (TTS), and advanced vision processing, communicating with the embedded firmware on the ESP32-S3 Sense board.
+This directory contains the Python-based AI orchestration system that acts as the distributed "brain" for the NAILA robot ecosystem. It implements a sophisticated multi-agent architecture handling AI processing, personality management, memory systems, and device coordination across multiple robot types.
 
-This server is designed to provide low-latency, private AI processing on a local network, reducing reliance on cloud services for core robot interactions.
+The system is designed around autonomous agents that collaborate to provide intelligent, contextual, and personalized interactions while maintaining complete privacy through local processing.
 
 ## ⚠️ Important Note: Robot Firmware
 
@@ -42,7 +42,7 @@ These instructions assume you have `uv` installed. If not, follow the `uv` insta
     If you haven't already cloned the entire `robo_naila` repository, do so:
     ```bash
     git clone --recursive https://github.com/LilliDarling/robo_naila
-    cd robo_naila/server
+    cd robo_naila/ai-server
     ```
 
 2.  **Create and activate a Python virtual environment:**
@@ -121,9 +121,9 @@ These instructions assume you have `uv` installed. If not, follow the `uv` insta
     * Activate the virtual environment in this new terminal.
     * Run the OTA server script:
         ```bash
-        cd robo_naila/server # if not already there
+        cd robo_naila/ai-server # if not already there
         source .venv/bin/activate
-        python update_server/ota_http_server.py
+        python infrastructure/ota_http_server.py
         ```
         This server will run on the port specified in `config.py` (e.g., `8070` or `8071`).
 

@@ -43,12 +43,54 @@ NAILA as a robot is designed to offer a range of intelligent and interactive fea
 
 ## 3. System Architecture
 
-The robot's intelligence is split between a low-power embedded system on the robot itself and a more powerful local AI server, communicating over a local network.
+[![NAILA Software Architecture](public/architecture.png)]([Excalidraw](https://link.excalidraw.com/readonly/hPAa6SyIcYey19s1j2yO?darkMode=true))
 
-**Key Interactions:**
-1. Robot (ESP32-S3 Sense): Handles hardware control (motors, display, LEDs), basic audio capture, wake word detection (on-device or via server), and WiFi communication.
-2. MQTT Broker: Acts as the central message hub. Both the robot and the server connect to it, enabling asynchronous, event-driven communication.
-3. Local AI Server: Runs on a more powerful machine (e.g., PC, Raspberry Pi 5). It hosts the large AI models and processes the heavy computational tasks.
+NAILA's architecture is designed as a distributed system with clear separation of concerns across hardware, firmware, communication layers, and AI processing components.
+
+### Core Architecture Components:
+
+**Hardware Layer:**
+- **Input Devices:** Microphone array, Touch/IR sensors, Camera
+- **Output Devices:** Speaker with amplification, Expressive screen/display
+- **Actuators:** Servo motors for movement and gestures
+
+**Firmware Layer (ESP32-S3):**
+- **Audio Processing:** Real-time audio capture and preprocessing
+- **Sensor Manager:** Handles touch, IR, and environmental sensors
+- **Vision Processing:** Basic computer vision tasks and camera management
+- **Motor Control:** Servo positioning and movement coordination
+- **Communications Manager:** WiFi connectivity and protocol handling
+- **OTA Updates:** Over-the-air firmware update capability
+
+**Communication Infrastructure:**
+- **MQTT Server:** Central message broker for asynchronous communication
+- **HTTP Server:** Web services for data access, logs, and device management
+- **Real-time Data Flow:** Bidirectional communication between all components
+
+**AI Orchestration Layer:**
+- **Main Agent:** Primary decision-making and conversation flow control
+- **Personality Agent:** Manages character traits and behavioral responses
+- **Context Agent:** Maintains conversation context and situational awareness
+- **Memory Agent:** Handles long-term memory and user personalization
+- **Planning Agent:** Task planning and goal-oriented behavior
+- **Tooling Agent:** Integration with external tools and services
+
+**AI Processing Pipeline:**
+- **Speech-to-Text (STT):** Audio transcription using Whisper models
+- **Large Language Model (LLM):** Natural language understanding and generation
+- **Text-to-Speech (TTS):** Voice synthesis with personality characteristics
+- **Computer Vision:** Object detection, face recognition, and visual analysis
+- **Emotion Detection:** Facial expression and sentiment analysis
+
+**Knowledge & Memory Systems:**
+- **Context Store:** Short-term conversation and interaction context
+- **Vector Database:** Long-term memory storage with semantic search capabilities
+
+**Web Services Interface:**
+- **Live Feed:** Real-time robot status and sensor data
+- **Device Controls:** Remote robot control and configuration
+- **Historical Data:** Logs, interaction history, and analytics
+- **Response Generation:** AI model outputs and processing logs
 
 ## 4. Hardware Overview
 
@@ -62,38 +104,56 @@ The robot's intelligence is split between a low-power embedded system on the rob
 
 ## 5. Software Components
 
-The project is divided into two main software domains:
+The project is architected as a distributed system with three main software domains:
 
-**`firmware/` (Robot Embedded Code)**
+### `firmware/` (Robot Embedded Code)
 This directory contains the C++/PlatformIO code that runs directly on the ESP32-S3 Sense board.
 
-* **Responsibilities:**  
-  * Low-level hardware control (motors, display, LEDs).
-  * Audio capture and pre-processing.
-  * WiFi connectivity and MQTT client for communication with the server.
-  * Potentially on-device wake word detection (if resources allow).
-  * Receiving and playing TTS audio.
-  * Receiving and executing action commands from the server.
-  * Handling OTA firmware updates.
+**Core Modules:**
+* **Audio Processing Module:** Real-time audio capture, noise reduction, and preprocessing
+* **Sensor Manager:** Unified interface for touch sensors, IR sensors, and environmental monitoring
+* **Vision Module:** On-device computer vision processing and camera management
+* **Motor Control System:** Servo coordination, movement patterns, and gesture execution
+* **Communications Manager:** WiFi connectivity, MQTT client, and protocol handling
+* **OTA Update Handler:** Secure over-the-air firmware update capability
 
-* **Further Details:** See [firmware/README.md](firmware/README.md)
+**Key Responsibilities:**  
+* Hardware abstraction and low-level device control
+* Real-time sensor data collection and processing
+* Local preprocessing to reduce server computational load
+* Reliable communication with the AI orchestration layer
+* Safety-critical motor control and hardware protection
 
-**`server/` (Local AI Server)**
-This directory contains the Python-based server that runs on a more powerful machine on your local network.
+**Further Details:** See [firmware/README.md](firmware/README.md)
 
-* **Responsibilities:**
-  * Hosts and runs large AI models for STT, NLU/LLM, TTS, and (optional) Vision.
-  * Manages MQTT communication with the robot.
-  * Orchestrates the robot's conversational flow and decision-making.
-  * Hosts a simple HTTP server for OTA firmware updates.
-  * Key AI Frameworks/Models Used:
-  * Speech-to-Text (STT): faster-whisper (e.g., tiny.en or base.en Whisper GGUF model)
-  * Natural Language Understanding (NLU) / Large Language Model (LLM): llama-cpp-python (e.g., Llama 3 8B Instruct GGUF model)
-  * Text-to-Speech (TTS): llama-cpp-python (with Llama-OuteTTS-1.0-1B-GGUF model for voice generation)
-  * Vision (Optional): Ultralytics YOLOv8 (e.g., yolov8n.pt model)
-  * MQTT Client: paho-mqtt or similar.
+### `server/` (AI Orchestration & Processing Server)
+This directory contains the Python-based multi-agent system that runs on a more powerful machine on your local network.
 
-* **Further Details:** See [server/README.md](server/README.md)
+**Agent Architecture:**
+* **Main Agent:** Central coordinator managing conversation flow and high-level decision making
+* **Personality Agent:** Maintains character consistency, emotional responses, and behavioral traits
+* **Context Agent:** Tracks conversation context, user preferences, and situational awareness
+* **Memory Agent:** Manages long-term memory, user relationships, and experience storage
+* **Planning Agent:** Handles goal setting, task decomposition, and multi-step action planning
+* **Tooling Agent:** Integrates external APIs, smart home controls, and utility functions
+
+**AI Processing Pipeline:**
+* **Speech-to-Text (STT):** `faster-whisper` with optimized Whisper models (tiny.en/base.en)
+* **Large Language Model (LLM):** `llama-cpp-python` running Llama 3 8B Instruct GGUF
+* **Text-to-Speech (TTS):** `llama-cpp-python` with Llama-OuteTTS-1.0-1B-GGUF for voice synthesis
+* **Computer Vision:** `Ultralytics YOLOv8` for object detection and scene understanding
+* **Face Recognition:** Advanced facial analysis and emotion detection capabilities
+
+**Infrastructure Components:**
+* **MQTT Broker:** Asynchronous message handling between robot and AI agents
+* **HTTP Server:** Web interface, device management, and historical data access
+* **Vector Database:** Semantic memory storage with similarity search capabilities
+* **Context Store:** Real-time conversation state and interaction history
+
+**Further Details:** See [ai-server/README.md](ai-server/README.md)
+
+### `public/` (Web Interface & Assets)
+Contains web-based monitoring and control interfaces, documentation assets, and configuration files for system management and user interaction.
 
 ## 6. Future Enhancements 
 

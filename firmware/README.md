@@ -3,7 +3,7 @@
 
 # NAILA Robot Firmware
 
-This directory contains the firmware source code for the robot's embedded system, designed to run on the Seeed Studio XIAO ESP32-S3 Sense board. It is built using the Espressif IDF (IoT Development Framework) and manages the robot's hardware interactions, on-device AI (wake word, basic vision), and communication with the local AI server.
+This directory contains the firmware source code for the robot's embedded system, designed to run on the Seeed Studio XIAO ESP32-S3 Sense board. It is built using the Espressif IDF (IoT Development Framework) and manages the robot's hardware interactions, on-device processing, and communication with the distributed AI orchestration system.
 
 ## ⚠️ Important Note: Environment Setup
 
@@ -20,13 +20,22 @@ Refer to the official ESP-IDF "Get Started" guide for detailed instructions spec
 
 ## Project Structure
 
-This is a standard ESP-IDF project structure. Key directories:  
+This is a standard ESP-IDF project structure aligned with the new multi-agent architecture. Key directories:
 
 * **`main/`**: Contains the core application logic of the robot.
     * `robot_main.c`: The main entry point and overall control flow.
-    * `communications/`: Handles Wi-Fi connectivity, MQTT/WebSocket/HTTP client implementation for talking to the local AI server, and OTA update client logic.
-    * `peripherals/`: Drivers and abstraction layers for the board's hardware (e.g., `motor_control.c` for servos, `display_driver.c` for the screen, `camera_interface.c`, `audio_capture.c`).
-    * `ai_inference/`: Contains the on-device SLM and their inference code (e.g., wake word detection model and inference functions).
+    * `communications/`: Handles Wi-Fi connectivity, MQTT client implementation for communicating with the AI orchestration layer, and OTA update client logic.
+    * `peripherals/`: Drivers and abstraction layers for the board's hardware:
+        * `audio_processing.c`: Real-time audio capture and preprocessing
+        * `sensor_manager.c`: Unified interface for touch, IR, and environmental sensors
+        * `vision_module.c`: On-device computer vision processing and camera management
+        * `motor_control.c`: Servo coordination, movement patterns, and gesture execution
+        * `display_driver.c`: Screen control for expressive animations
+    * `ai_inference/`: Contains on-device AI capabilities:
+        * Wake word detection models and inference
+        * Basic vision preprocessing
+        * Local safety and emergency response logic
+    * `security/`: Device-level security implementations
     * ... (other robot-specific logic as it evolves)
 * **`components/`**: Custom components or Git submodules for external C/C++ libraries not part of the ESP-IDF components registry.
 * **`idf_component.yml`**: Defines dependencies on components from the Espressif Components Registry. The ESP-IDF build system automatically downloads and manages these.
@@ -72,5 +81,5 @@ Once your ESP-IDF environment is set up and active, follow these steps to build 
 
 This firmware is designed to support OTA updates from the local AI server. The `partitions.csv` file is configured for two application partitions (`app0` and `app1`).
 
-* The `communications/ota_updater.c` module handles the client-side logic for checking for updates, downloading new firmware from the local server (via HTTP), and rebooting into the new image.
-* The local AI server (in the `../server/` directory) hosts the `.bin` firmware files for OTA. Refer to the server's documentation for triggering OTA updates.
+* The `communications/ota_updater.c` module handles the client-side logic for checking for updates, downloading new firmware from the AI orchestration server (via HTTP), and rebooting into the new image.
+* The AI orchestration system (in the `../ai-server/` directory) manages OTA updates through its device management component. Refer to the server's documentation for triggering OTA updates.

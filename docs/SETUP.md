@@ -66,9 +66,9 @@ Communication between the robot and the server is primarily via **MQTT**. Over-T
 
 ---
 
-## 3. Server Setup (Local AI Brain)
+## 3. AI Server Setup (Multi-Agent Orchestration System)
 
-This section guides you through setting up the Python-based AI server on your host machine.
+This section guides you through setting up the Python-based AI orchestration system with its multi-agent architecture on your host machine.
 
 ### 3.1. Clone the Repository
 
@@ -76,7 +76,7 @@ Open your terminal or command prompt and clone the entire robot project reposito
 
 ```bash
 git clone --recursive https://github.com/LilliDarling/robo_naila
-cd robo-naila/server
+cd robo-naila/ai-server
 ```
 
 ### 3.2. Install `uv` (Python Package Manager)
@@ -103,7 +103,7 @@ After installation, it's a good practice to close and reopen your terminal or en
 
 ### 3.3. Set up Python Virtual Environment
 
-Navigate to the `server/` directory (if you're not already there) and create a dedicated Python virtual environment. This isolates your project's Python dependencies from your system-wide Python installation.
+Navigate to the `ai-server/` directory (if you're not already there) and create a dedicated Python virtual environment. This isolates your project's Python dependencies from your system-wide Python installation.
 
 ```bash
 uv venv
