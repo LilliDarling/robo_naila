@@ -4,12 +4,12 @@ Small custom built desk AI robot prototype.
 
 ## Table of Contents
 
-1.  [About the Project](#about-the-project)
-2.  [Features & Capabilities](#features--capabilities)
-3.  [System Architecture](#system-architecture)
-4.  [Hardware Overview](#hardware-overview)
-5.  [Software Components](#software-components)
-6.  [Future Enhancements](#future-enhancements)
+1.  [About the Project](#1-about-the-project)
+2.  [Features & Capabilities](#2-features--capabilities)
+3.  [System Architecture](#3-system-architecture)
+4.  [Hardware Overview](#4-hardware-overview)
+5.  [Software Components](#5-software-components)
+6.  [Future Enhancements](#6-future-enhancements)
 7.  [Copyright & Licensing](#7-copyright--licensing)
 
 ---
